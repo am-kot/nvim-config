@@ -1,0 +1,31 @@
+def printer(array: list):
+    print(array)
+
+
+def array_creator(row_number: int, array: list) -> list:
+    new_array = [ 1 for i in range(row_number+1) ]
+
+    if row_number > 2:
+        for index in range(1, row_number-1):
+            print(f'{index=}')
+            new_array[index] = [ array[index-1] + array[index] ]
+
+    return new_array
+
+
+def main():
+    number_of_rows = int(input(' -> '))
+
+    array = []
+
+    for row_number in range(number_of_rows):
+        array = array_creator(row_number, array)
+        printer(array)
+
+
+
+if __name__ ==  "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        exit()
