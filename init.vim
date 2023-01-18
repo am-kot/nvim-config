@@ -17,11 +17,14 @@ set smartindent
 set tabstop=2
 set expandtab
 set shiftwidth=2
+:set cursorline
 
 inoremap jk <esc>
 
 call plug#begin('~/.vim/plugged')
 
+
+Plug 'tmsvg/pear-tree'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -70,6 +73,8 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 "Plug 'voldikss/vim-floaterm'
 
 call plug#end()
+
+
 
 let mapleader = ' '
 "style
@@ -168,7 +173,14 @@ lua <<EOF
   -- Set up lspconfig.
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['pyright'].setup {
+  require('lspconfig')['pyright'].setup { 
     capabilities = capabilities
   }
+  require('lspconfig')['clangd'].setup { 
+    --capabilities = capabilities
+  }
 EOF
+
+
+
+"require('lspconfig')['pyright'].setup {
