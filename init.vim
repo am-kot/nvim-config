@@ -19,10 +19,16 @@ set expandtab
 set shiftwidth=2
 :set cursorline
 
-inoremap jk <esc>
+"inoremap jk <esc>
 
 call plug#begin('~/.vim/plugged')
 
+
+"PlatformIO
+Plug 'normen/vim-pio'
+Plug 'coddingtonbear/neomake-platformio'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'mattn/vim-lsp-settings'
 
 Plug 'tmsvg/pear-tree'
 Plug 'neovim/nvim-lspconfig'
@@ -40,6 +46,9 @@ Plug 'https://github.com/vim-airline/vim-airline-themes'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 
 " color schemas
+Plug 'tomasiser/vim-code-dark'
+Plug 'ayu-theme/ayu-vim'
+Plug 'shaunsingh/nord.nvim'
 Plug 'morhetz/gruvbox'  " colorscheme gruvbox
 Plug 'mhartington/oceanic-next'  " colorscheme OceanicNext
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
@@ -76,11 +85,48 @@ call plug#end()
 
 
 
+
+" General settings____________________________________________________________
+
 let mapleader = ' '
-"style
-colorscheme gruvbox
+
+" Running python scripts inside  nvim window__________________________________
+
+autocmd FileType python map <buffer> <C-h> :w<CR>:exec '!python3.11' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <C-h> <esc>:w<CR>:exec '!python3.11' shellescape(@%, 1)<CR>
+
+" Running C++ scripts inside nvim window
+autocmd FileType cpp map <buffer> <C-h> :w<CR>:exec '!g++' shellescape(@%, 1) '-o out; ./out'<CR>
+autocmd FileType cpp imap <buffer> <C-h> <esc>:w<CR>:exec '!gcc' shellescape(@%, 1) '-o out; ./out'<CR>
+
+
+"Styling______________________________________________________________________
+
+"colorscheme nord
+"colorscheme OceanicNext
+"colorscheme gruvbox
+"colorscheme codedark
+
+
+"Setup VS colorscheme
+let g:codedark_conservative=0 " Style of the standard Visual Studio
+let g:codedark_transparent=0 " Make the background transparent
+let g:codedark_italics=0 " Make the background transparent
+let g:airline_theme = 'codedark' " If you have vim-airline, you can also enable the provided theme
+
+" Setup gruvbox colorscheme
 "let g:airline_theme='gruvbox'
-let g:airline_powerline_fonts = 1
+
+"Actual colorscheme
+colorscheme codedark
+
+if $TERM_PROGRAM =~ "iTerm"
+  let g:airline_powerline_fonts = 1 " Enable only with PowerLine Font
+endif
+
+"_____________________________________________________________________________
+
+
 
 "comments
 nmap <C-_> <plug>nerdcommentertoggle
@@ -176,8 +222,16 @@ lua <<EOF
   require('lspconfig')['pyright'].setup { 
     capabilities = capabilities
   }
-  require('lspconfig')['clangd'].setup { 
+  "require('lspconfig')['clangd'].setup { 
+  "  --capabilities = capabilities
+  "  on_attach = on_attach, 
+  "  flags = lsp_flags
+  "}
+  "
+  require('lspconfig')['ccls'].setup { 
     --capabilities = capabilities
+    on_attach = on_attach, 
+    flags = lsp_flags
   }
 EOF
 
