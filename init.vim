@@ -23,14 +23,15 @@ set shiftwidth=2
 
 call plug#begin('~/.vim/plugged')
 
-
+Plug 'jiangmiao/auto-pairs'
 "PlatformIO
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'normen/vim-pio'
 Plug 'coddingtonbear/neomake-platformio'
 "Plug 'prabirshrestha/vim-lsp'
 "Plug 'mattn/vim-lsp-settings'
 
-Plug 'tmsvg/pear-tree'
+"Plug 'tmsvg/pear-tree'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -43,7 +44,6 @@ Plug 'preservim/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'https://github.com/vim-airline/vim-airline-themes'
 
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 
 " color schemas
 Plug 'tomasiser/vim-code-dark'
@@ -75,8 +75,10 @@ Plug 'prettier/vim-prettier', {
 
 Plug 'bmatcuk/stylelint-lsp'
 
+"Searching
+Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+"Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 " Convenient floating terminal window
 "Plug 'voldikss/vim-floaterm'
@@ -106,19 +108,20 @@ autocmd FileType cpp imap <buffer> <C-h> <esc>:w<CR>:exec '!gcc' shellescape(@%,
 "colorscheme OceanicNext
 "colorscheme gruvbox
 "colorscheme codedark
+"colorscheme habamax
 
 
 "Setup VS colorscheme
-let g:codedark_conservative=0 " Style of the standard Visual Studio
+"let g:codedark_conservative=0 " Style of the standard Visual Studio
 let g:codedark_transparent=0 " Make the background transparent
-let g:codedark_italics=0 " Make the background transparent
+"let g:codedark_italics=0 " Make the background transparent
 let g:airline_theme = 'codedark' " If you have vim-airline, you can also enable the provided theme
 
 " Setup gruvbox colorscheme
 "let g:airline_theme='gruvbox'
 
 "Actual colorscheme
-colorscheme codedark
+colorscheme habamax
 
 if $TERM_PROGRAM =~ "iTerm"
   let g:airline_powerline_fonts = 1 " Enable only with PowerLine Font
@@ -127,10 +130,9 @@ endif
 "_____________________________________________________________________________
 
 
-
-"comments
-nmap <C-_> <plug>nerdcommentertoggle
-nmap <C-_> <plug>nerdcommentertoggle<CR>gv
+"commeter
+filetype plugin on
+map <leader>d <Plug>NERDCommenterInvert
 
 "files tree
 let NERDTreeQuitOnOpen=1
@@ -145,9 +147,15 @@ nmap <leader>. :bn<CR>
 nmap <C-w> :bd<CR>
 
 
-"search
+"searching using Telescope
+"lua << EOF
+"require('telescope').setup{
+""  -- ...
+"}
+"EOF
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+
 
 
 set completeopt=menu,menuone,noselect
@@ -222,17 +230,16 @@ lua <<EOF
   require('lspconfig')['pyright'].setup { 
     capabilities = capabilities
   }
-  "require('lspconfig')['clangd'].setup { 
-  "  --capabilities = capabilities
-  "  on_attach = on_attach, 
-  "  flags = lsp_flags
-  "}
-  "
-  require('lspconfig')['ccls'].setup { 
+  --https://github.com/nvim-telescope/telescope.nvim
+  require('lspconfig')['clangd'].setup { 
     --capabilities = capabilities
-    on_attach = on_attach, 
-    flags = lsp_flags
+    --on_attach = on_attach,
+    --flags = lsp_flags,
   }
+  --require('lspconfig')['clangd'].setup { 
+    --capabilities = capabilities
+  --}
+
 EOF
 
 
