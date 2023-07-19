@@ -1,5 +1,5 @@
 # nvim-config
 
-Configuration for nvim console text editor
+Configuration for nvim
 
 See also: https://github.com/alexey-goloburdin/nvim-config
